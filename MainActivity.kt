@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import com.nitin.aiassistant.ui.screens.home.HomeScreen
 import androidx.compose.ui.tooling.preview.Preview
 import com.nitin.aiassistant.ui.theme.AIAssistantTheme
+import com.nitin.aiassistant.ui.navigation.NavigationGraph
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     androidx.compose.foundation.layout.Box(
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        HomeScreen()
+                        NavigationGraph()
                     }
                 }
             }
