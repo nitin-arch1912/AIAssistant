@@ -10,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.nitin.aiassistant.ui.screens.home.HomeScreen
 import androidx.compose.ui.tooling.preview.Preview
 import com.nitin.aiassistant.ui.theme.AIAssistantTheme
 
@@ -19,29 +20,17 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AIAssistantTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
+                Scaffold(
+                    modifier = Modifier.fillMaxSize()
+                ) { innerPadding ->
+
+                    androidx.compose.foundation.layout.Box(
                         modifier = Modifier.padding(innerPadding)
-                    )
+                    ) {
+                        HomeScreen()
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    AIAssistantTheme {
-        Greeting("Android")
     }
 }
