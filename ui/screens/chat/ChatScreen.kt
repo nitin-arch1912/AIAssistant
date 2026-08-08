@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import com.nitin.aiassistant.ui.components.TypingIndicator
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
@@ -31,6 +30,7 @@ fun ChatScreen(
 
     val messages by chatViewModel.messages.collectAsState()
     val isTyping by chatViewModel.isTyping.collectAsState()
+
     val listState = rememberLazyListState()
 
     Scaffold(
@@ -66,7 +66,7 @@ fun ChatScreen(
                     state = listState,
                     contentPadding = PaddingValues(
                         horizontal = 16.dp,
-                        vertical = 12.dp
+                        vertical = 16.dp
                     ),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
@@ -82,6 +82,7 @@ fun ChatScreen(
                             message = message
                         )
                     }
+
                     if (isTyping) {
                         item {
                             TypingIndicator()
@@ -92,12 +93,19 @@ fun ChatScreen(
         }
     }
 
-    LaunchedEffect(messages.size) {
+    LaunchedEffect(
+        messages.size,
+        isTyping
+    ) {
 
         if (messages.isNotEmpty()) {
 
             listState.animateScrollToItem(
-                index = messages.lastIndex
+                index = if (isTyping) {
+                    messages.size
+                } else {
+                    messages.lastIndex
+                }
             )
         }
     }
