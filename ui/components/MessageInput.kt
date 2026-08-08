@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,7 +17,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun MessageInput(
-    onSend: (String) -> Unit
+    onSend: (String) -> Unit,
+    onMicClick: () -> Unit = {}
 ) {
     var text by remember {
         mutableStateOf("")
@@ -26,6 +28,14 @@ fun MessageInput(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+
+        IconButton(
+            onClick = {
+                onMicClick()
+            }
+        ) {
+            Text("🎤")
+        }
 
         OutlinedTextField(
             value = text,
