@@ -1,9 +1,12 @@
 package com.nitin.aiassistant.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.nitin.aiassistant.domain.model.ChatMessage
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class ChatViewModel : ViewModel() {
 
@@ -11,6 +14,11 @@ class ChatViewModel : ViewModel() {
         MutableStateFlow<List<ChatMessage>>(emptyList())
 
     val messages = _messages.asStateFlow()
+
+    private val _isTyping =
+        MutableStateFlow(false)
+
+    val isTyping = _isTyping.asStateFlow()
 
     fun sendMessage(text: String) {
 
@@ -30,30 +38,39 @@ class ChatViewModel : ViewModel() {
 
     private fun generateTemporaryResponse(text: String) {
 
-        val response = when {
-            text.contains("hello", ignoreCase = true) ->
-                "Hello! 👋 I'm your AI Assistant."
+        viewModelScope.launch {
 
-            text.contains("weather", ignoreCase = true) ->
-                "Weather feature isn't connected yet, but we'll add it soon. 🌤️"
+            _isTyping.value = true
 
-            text.contains("chrome", ignoreCase = true) ->
-                "Chrome control isn't connected yet. 🌐"
+            delay(1200)
 
-            text.contains("call", ignoreCase = true) ->
-                "Phone calling isn't connected yet. 📞"
+            val response = when {
+                text.contains("hello", ignoreCase = true) ->
+                    "Hello! 👋 I'm your AI Assistant."
 
-            else ->
-                "I received your message: \"$text\""
+                text.contains("weather", ignoreCase = true) ->
+                    "Weather feature isn't connected yet, but we'll add it soon. 🌤️"
+
+                text.contains("chrome", ignoreCase = true) ->
+                    "Chrome control isn't connected yet. 🌐"
+
+                text.contains("call", ignoreCase = true) ->
+                    "Phone calling isn't connected yet. 📞"
+
+                else ->
+                    "I received your message: \"$text\""
+            }
+
+            val aiMessage = ChatMessage(
+                id = System.currentTimeMillis(),
+                message = response,
+                isUser = false,
+                timestamp = System.currentTimeMillis()
+            )
+
+            _messages.value += aiMessage
+
+            _isTyping.value = false
         }
-
-        val aiMessage = ChatMessage(
-            id = System.currentTimeMillis() + 1,
-            message = response,
-            isUser = false,
-            timestamp = System.currentTimeMillis()
-        )
-
-        _messages.value += aiMessage
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import com.nitin.aiassistant.ui.components.TypingIndicator
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
@@ -29,7 +30,7 @@ fun ChatScreen(
 ) {
 
     val messages by chatViewModel.messages.collectAsState()
-
+    val isTyping by chatViewModel.isTyping.collectAsState()
     val listState = rememberLazyListState()
 
     Scaffold(
@@ -78,7 +79,11 @@ fun ChatScreen(
                             message = message
                         )
                     }
-
+                    if (isTyping) {
+                        item {
+                            TypingIndicator()
+                        }
+                    }
                 }
             }
         }
