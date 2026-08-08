@@ -16,13 +16,44 @@ class ChatViewModel : ViewModel() {
 
         if (text.isBlank()) return
 
-        val message = ChatMessage(
+        val userMessage = ChatMessage(
             id = System.currentTimeMillis(),
             message = text,
             isUser = true,
             timestamp = System.currentTimeMillis()
         )
 
-        _messages.value += message
+        _messages.value += userMessage
+
+        generateTemporaryResponse(text)
+    }
+
+    private fun generateTemporaryResponse(text: String) {
+
+        val response = when {
+            text.contains("hello", ignoreCase = true) ->
+                "Hello! 👋 I'm your AI Assistant."
+
+            text.contains("weather", ignoreCase = true) ->
+                "Weather feature isn't connected yet, but we'll add it soon. 🌤️"
+
+            text.contains("chrome", ignoreCase = true) ->
+                "Chrome control isn't connected yet. 🌐"
+
+            text.contains("call", ignoreCase = true) ->
+                "Phone calling isn't connected yet. 📞"
+
+            else ->
+                "I received your message: \"$text\""
+        }
+
+        val aiMessage = ChatMessage(
+            id = System.currentTimeMillis() + 1,
+            message = response,
+            isUser = false,
+            timestamp = System.currentTimeMillis()
+        )
+
+        _messages.value += aiMessage
     }
 }
