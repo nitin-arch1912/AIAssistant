@@ -36,6 +36,9 @@ class ChatViewModel : ViewModel() {
         generateTemporaryResponse(text)
     }
 
+    fun onMicrophoneClicked() {
+        println("🎤 Microphone button clicked")
+    }
     private fun generateTemporaryResponse(text: String) {
 
         viewModelScope.launch {

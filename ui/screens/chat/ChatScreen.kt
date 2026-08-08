@@ -41,6 +41,9 @@ fun ChatScreen(
             MessageInput(
                 onSend = { message ->
                     chatViewModel.sendMessage(message)
+                },
+                onMicClick = {
+                    chatViewModel.onMicrophoneClicked()
                 }
             )
         }
